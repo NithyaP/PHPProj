@@ -1,0 +1,175 @@
+<?php 
+$conn=mysqli_connect("localhost","vijeshkk","nit","nitdb") or die('Error:' .mysql_connect());
+if (isset($_POST['amount'])){
+$sql="INSERT INTO budget(amount,category,Datentime,type) VALUES ('".$_POST["amount"]."','".$_POST["cato"]."','".$_POST["daten"]."',0)";
+if (!mysqli_query($conn,$sql))
+  {
+  die('Error: ' . mysqli_error($conn));
+  }
+
+mysqli_close($conn);
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
+<title></title>
+<style>
+#maindiv{
+width:1010px;
+margin: -10px auto 0px auto;
+color:darkblue;
+text-align:center;
+}
+#headline{
+width:1007px;
+height:50px;
+margin:10px 1px 5px 1px;
+background:white;
+}
+#calander{
+height:200px;
+width:500px;
+background:Darkgray;
+margin:0px 0px 5px 1px;
+}
+#listing{
+height:398px;
+width:500px;
+overflow:hidden;
+background:Mediumspringgreen;
+margin:1px 0px 0px 1px;
+
+}
+#inputing{
+height:200px;
+width:500px;
+background:limegreen;
+margin:-603px 0px 0px 507px;
+}
+#review{
+height:200px;
+width:500px;
+overflow:hidden;
+background:Dodgerblue;
+margin:5px 0px 0px 507px;
+}
+#settings{
+height:193px;
+width:500px;
+overflow:hidden;
+background:darkorange;
+margin:5px 0px 0px 507px;
+}
+
+#section{
+float:left;
+height:45px;
+width:480px;
+background:Deepskyblue;
+color:white;
+border-radius:15px;
+margin-top:5px;
+margin-left:10px;
+}
+label#amt{
+float:left;
+text-align:left;
+margin-left:280px;
+margin-top:-30px;
+font-size:20px;
+}
+label#date{
+float:left;
+font-size:10px;
+font-style:italic;
+margin-left:10px;
+margin-top:10px;
+}
+label#cat{
+float:left;
+font-size:10px;
+font-style:italic;
+text-align:left;
+margin-left:10px;
+margin-top:5px;
+}
+body{
+background: white;
+font-family: 'Lato', serif;
+}
+.inputbox{
+font-size:20px;
+font-style:italic;
+text-align:center;
+color:lightgray;
+width:200px;
+height:30px;
+margin:10px 10px 10px 10px;
+}
+
+.butn{
+width:200px;
+height:30px;
+text-align:center;
+background:Deepskyblue;
+border: 2px Dodgerblue outset;
+}
+</style>
+</head>
+<body>
+<div id="maindiv">
+<div id="headline">
+</div>
+<div id="calander">
+</div>
+
+<div id="listing">
+.<br>
+RECENT TRANSACTIONS
+<?php
+//fetching from Database
+$sql = 'SELECT category, amount, Datentime from budget ';
+
+
+$retval = mysqli_query(  $conn,$sql);
+if(! $retval )
+{
+  die('Could not get data: ' . mysql_error());
+}
+while($row = mysqli_fetch_array($retval))
+{
+?>
+
+<div id="section">
+<label id="cat">CATEGORY: <?php echo (htmlspecialchars($row['category']));?></label><br>
+<label id="date">DATE n TIME: <?php echo (htmlspecialchars($row['Datentime']));?></label><br>
+<label id="amt">AMOUNT: <?php echo (htmlspecialchars($row['amount']));?> S$<label><br>
+</div>
+
+<?php	 
+} 
+mysqli_close($conn);
+?>
+</div>
+<div id="inputing">
+.<br>
+NEW TRANSACTIONS <br>
+<form action="<?php $_PHP_SELF ?>" method="POST" />
+<input id="amount" class="inputbox" name="amount" value="Amount" onclick="this.value=''"/>
+<input id="cato" class="inputbox" name="cato" value="Category" onclick="this.value=''"/>
+<input id="daten" class="inputbox" name="daten" value="Date'nTime" onclick="this.value=''"/>
+<input id="remark" class="inputbox" name="remark" value="Remarks" onclick="this.value=''"/>
+<input id="submit" type="button" class="butn" value="SUBMIT" >
+<input id="cancel" type="button" class="butn" value="CANCEL" >
+</form>
+</div>
+<div id="review">
+</div>
+<div id="settings">
+</div>
+ </div>
+</body>
+</html>
